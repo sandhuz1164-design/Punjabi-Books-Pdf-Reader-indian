@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Book, Home, Search, BookOpen, Moon, Sun, Library, X, FileUp, Star, Quote, Users, Hash, ChevronDown } from 'lucide-react';
+import { Book, Home, Search, BookOpen, Moon, Sun, Library, X, FileUp, Star, Quote, Users, Hash, ChevronDown, Headphones } from 'lucide-react';
 import { books, genres, Book as BookType } from './data/books';
 import { authors, demoTags } from './data/authors';
 import PDFReader from './components/PDFReader';
 import BookInfo from './components/BookInfo';
+import AudioPlayer from './components/AudioPlayer';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'info' | 'reader' | 'pdf'>('home');
@@ -17,6 +18,7 @@ function App() {
   const [showSidebar, setShowSidebar] = useState(false);
   const [bookmarks, setBookmarks] = useState<{ [key: string]: number[] }>({});
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
+  const [showAudio, setShowAudio] = useState(false);
 
   const filteredBooks = books.filter(book => {
     const matchesSearch = book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -592,11 +594,36 @@ function App() {
                   <button onClick={() => setFontSize(Math.max(14, fontSize - 2))} className={`px-2 py-1 rounded text-xs font-bold ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-amber-100'}`}>A-</button>
                   <button onClick={() => setFontSize(Math.min(28, fontSize + 2))} className={`px-2 py-1 rounded text-sm font-bold ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-amber-100'}`}>A+</button>
                   <button onClick={() => toggleBookmark(selectedBook.id, selectedBook.chapters[currentChapter].id)} className={`p-2 rounded-lg transition-colors ${isBookmarked(selectedBook.id, selectedBook.chapters[currentChapter].id) ? 'text-amber-500' : darkMode ? 'hover:bg-gray-700' : 'hover:bg-amber-100'}`}>🔖</button>
+                  <button 
+                    onClick={() => setShowAudio(!showAudio)} 
+                    className={`p-2 rounded-lg transition-colors ${showAudio ? 'bg-amber-600 text-white' : darkMode ? 'hover:bg-gray-700' : 'hover:bg-amber-100'}`}
+                    title="Toggle Audio Reader"
+                  >
+                    <Headphones className="w-5 h-5" />
+                  </button>
                 </div>
               </div>
 
               <div className="flex-1 overflow-y-auto">
                 <div className="max-w-3xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
+                  {/* Audio Player */}
+                  <AnimatePresence>
+                    {showAudio && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -20, height: 0 }}
+                        animate={{ opacity: 1, y: 0, height: 'auto' }}
+                        exit={{ opacity: 0, y: -20, height: 0 }}
+                        className="mb-8"
+                      >
+                        <AudioPlayer
+                          text={selectedBook.chapters[currentChapter]?.content || ''}
+                          darkMode={darkMode}
+                          chapterTitle={selectedBook.chapters[currentChapter]?.title || ''}
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
                   <motion.div key={currentChapter} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                     <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-center">{selectedBook.chapters[currentChapter]?.title}</h1>
                     <div className={`leading-relaxed whitespace-pre-line ${darkMode ? 'text-gray-300' : 'text-gray-700'}`} style={{ fontSize: `${fontSize}px`, lineHeight: '1.8' }}>
