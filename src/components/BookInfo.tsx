@@ -222,7 +222,7 @@ export default function BookInfo({ book, darkMode, onBack, onRead, relatedBooks 
                   <p className={`text-xs mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                     by {relBook.author}
                   </p>
-                  <div className="flex items-center justify-between pt-2 border-t border-dashed border-opacity-30 ${darkMode ? 'border-gray-600' : 'border-amber-200'}">
+                  <div className={`flex items-center justify-between pt-2 border-t border-dashed border-opacity-30 ${darkMode ? 'border-gray-600' : 'border-amber-200'}`}>
                     <span className={`text-[10px] px-2 py-1 rounded-full font-medium ${
                       darkMode ? 'bg-amber-900/30 text-amber-400' : 'bg-amber-100 text-amber-700'
                     }`}>
