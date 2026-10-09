@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowLeft, Star, BookOpen, FileText, Clock, User, BookMarked } from 'lucide-react';
+import { ArrowLeft, Star, BookOpen, FileText, Clock, User, BookMarked, Library } from 'lucide-react';
 import { Book } from '../data/books';
 
 interface BookInfoProps {
@@ -7,11 +7,13 @@ interface BookInfoProps {
   darkMode: boolean;
   onBack: () => void;
   onRead: () => void;
+  relatedBooks?: Book[];
+  onBookClick?: (book: Book) => void;
 }
 
-export default function BookInfo({ book, darkMode, onBack, onRead }: BookInfoProps) {
+export default function BookInfo({ book, darkMode, onBack, onRead, relatedBooks = [], onBookClick }: BookInfoProps) {
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-16">
       {/* Back Button */}
       <motion.button
         initial={{ opacity: 0, x: -20 }}
@@ -148,6 +150,82 @@ export default function BookInfo({ book, darkMode, onBack, onRead }: BookInfoPro
           ))}
         </div>
       </div>
+
+      {/* Related Books Section */}
+      {relatedBooks.length > 0 && (
+        <div className="mt-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <h2 className="text-lg font-bold mb-1 flex items-center gap-2">
+              <Library className="w-4 h-4 text-amber-600" />
+              Related Books
+            </h2>
+            <p className={`text-sm mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+              More books in the <span className="font-semibold text-amber-600">{book.genre}</span> genre you might enjoy
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {relatedBooks.map((relBook, index) => (
+              <motion.div
+                key={relBook.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 + index * 0.08 }}
+                onClick={() => onBookClick?.(relBook)}
+                className={`group cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+                  darkMode
+                    ? 'bg-gray-800 border border-gray-700 hover:border-amber-600/50'
+                    : 'bg-white border border-amber-100 hover:border-amber-300 hover:shadow-amber-200/50'
+                }`}
+              >
+                {/* Book Cover */}
+                <div className="relative aspect-[2/3] overflow-hidden">
+                  <img
+                    src={relBook.coverImage}
+                    alt={relBook.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                    <span className="text-white text-xs font-bold">View Details →</span>
+                  </div>
+                </div>
+                {/* Book Info */}
+                <div className="p-3">
+                  <h3 className="font-bold text-sm leading-tight mb-1 truncate">{relBook.title}</h3>
+                  <p className={`text-xs truncate mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                    {relBook.author}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                      <span className="text-xs font-medium">{relBook.rating}</span>
+                    </div>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                      darkMode ? 'bg-amber-900/30 text-amber-400' : 'bg-amber-100 text-amber-700'
+                    }`}>
+                      {relBook.genre}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* If no related books of same genre, show "You might also like" */}
+          {relatedBooks.length === 0 && (
+            <div className={`text-center py-8 rounded-xl ${darkMode ? 'bg-gray-800/50' : 'bg-amber-50'}`}>
+              <BookOpen className={`w-10 h-10 mx-auto mb-2 ${darkMode ? 'text-gray-600' : 'text-gray-300'}`} />
+              <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                No related books found in this genre yet.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

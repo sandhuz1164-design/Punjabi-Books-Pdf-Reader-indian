@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Book, Home, Search, BookOpen, Moon, Sun, Library, X, FileUp, Star, Quote, Users, Hash, ChevronDown, Headphones } from 'lucide-react';
+import { Book, Home, Search, BookOpen, Moon, Sun, Library, X, FileUp, Star, Quote, Users, Hash, ChevronDown, Headphones, Trophy, Heart, Mail, Globe, Shield, Sparkles, ArrowRight } from 'lucide-react';
 import { books, genres, Book as BookType } from './data/books';
 import { authors, demoTags } from './data/authors';
 import PDFReader from './components/PDFReader';
@@ -26,6 +26,14 @@ function App() {
     const matchesGenre = selectedGenre === 'All' || book.genre === selectedGenre;
     return matchesSearch && matchesGenre;
   });
+
+  // Top 10 books sorted by rating
+  const topBooks = [...books].sort((a, b) => b.rating - a.rating).slice(0, 10);
+
+  // Get related books (same genre, excluding current book)
+  const getRelatedBooks = (book: BookType) => {
+    return books.filter(b => b.genre === book.genre && b.id !== book.id);
+  };
 
   const openBookInfo = (book: BookType) => {
     setSelectedBook(book);
@@ -226,6 +234,93 @@ function App() {
                     <ChevronDown className="w-4 h-4 animate-bounce" />
                   </a>
                 </motion.div>
+              </div>
+            </div>
+
+            {/* ========== TOP 10 BOOKS SECTION ========== */}
+            <div id="top-books" className={`py-12 border-b ${darkMode ? 'border-gray-800 bg-gradient-to-b from-gray-900 to-gray-900/50' : 'border-amber-100 bg-gradient-to-b from-amber-50 to-white'}`}>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="text-center mb-8"
+                >
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Trophy className="w-6 h-6 text-amber-500" />
+                    <h2 className="text-2xl sm:text-3xl font-bold">Top 10 Books</h2>
+                    <Sparkles className="w-5 h-5 text-amber-500" />
+                  </div>
+                  <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Our highest-rated books — handpicked for you
+                  </p>
+                </motion.div>
+
+                {/* Top 10 Books Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+                  {topBooks.map((book, index) => (
+                    <motion.div
+                      key={book.id}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.08 }}
+                      onClick={() => openBookInfo(book)}
+                      className="group cursor-pointer relative"
+                    >
+                      {/* Rank Badge */}
+                      <div className={`absolute -top-2 -left-2 z-10 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs shadow-lg ${
+                        index === 0 ? 'bg-gradient-to-br from-yellow-400 to-amber-500 text-white' :
+                        index === 1 ? 'bg-gradient-to-br from-gray-300 to-gray-400 text-white' :
+                        index === 2 ? 'bg-gradient-to-br from-amber-600 to-amber-700 text-white' :
+                        darkMode ? 'bg-gray-700 text-gray-300 border border-gray-600' : 'bg-white text-gray-700 border border-amber-200'
+                      }`}>
+                        #{index + 1}
+                      </div>
+
+                      {/* Book Card */}
+                      <div className={`rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2 ${
+                        darkMode
+                          ? 'bg-gray-800 border border-gray-700 hover:border-amber-600/50 hover:shadow-amber-600/10'
+                          : 'bg-white border border-amber-100 hover:border-amber-300 hover:shadow-amber-200/50'
+                      }`}>
+                        {/* Cover */}
+                        <div className="relative aspect-[2/3] overflow-hidden">
+                          <img
+                            src={book.coverImage}
+                            alt={book.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+                            <div className="flex items-center gap-1 mb-1">
+                              <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                              <span className="text-white text-sm font-bold">{book.rating}</span>
+                            </div>
+                            <button className="w-full py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg transition-colors">
+                              READ NOW
+                            </button>
+                          </div>
+                        </div>
+                        {/* Info */}
+                        <div className="p-3">
+                          <h3 className="font-bold text-sm leading-tight mb-1 truncate">{book.title}</h3>
+                          <p className={`text-xs truncate mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{book.author}</p>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-0.5">
+                              <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                              <span className="text-xs font-semibold">{book.rating}</span>
+                            </div>
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                              darkMode ? 'bg-amber-900/30 text-amber-400' : 'bg-amber-100 text-amber-700'
+                            }`}>
+                              {book.genre}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -539,12 +634,249 @@ function App() {
                 </div>
               )}
             </div>
+
+            {/* ========== ABOUT SECTION ========== */}
+            <div className={`py-16 border-t ${darkMode ? 'border-gray-800' : 'border-amber-100'}`}>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="max-w-3xl mx-auto text-center mb-12"
+                >
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <Book className="w-6 h-6 text-amber-600" />
+                    <h2 className="text-2xl sm:text-3xl font-bold">About BookVerse</h2>
+                  </div>
+                  <p className={`text-base leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    BookVerse is your premier digital library destination, bringing timeless literary classics to your fingertips. 
+                    Our mission is to make great literature accessible to everyone, everywhere. Whether you're a student, a casual reader, 
+                    or a lifelong bibliophile, BookVerse offers a curated collection of the world's most influential works.
+                  </p>
+                </motion.div>
+
+                {/* Feature Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 }}
+                    className={`p-6 rounded-2xl text-center ${
+                      darkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-amber-100 shadow-sm'
+                    }`}
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mx-auto mb-4">
+                      <BookOpen className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="font-bold text-lg mb-2">Curated Collection</h3>
+                    <p className={`text-sm leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Every book in our library is carefully selected for its literary merit, cultural significance, and enduring relevance. 
+                      From ancient philosophy to modern fiction, discover works that have shaped human thought.
+                    </p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                    className={`p-6 rounded-2xl text-center ${
+                      darkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-amber-100 shadow-sm'
+                    }`}
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center mx-auto mb-4">
+                      <Headphones className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="font-bold text-lg mb-2">Read & Listen</h3>
+                    <p className={`text-sm leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Enjoy our books with a comfortable reading experience featuring adjustable fonts, bookmarks, and chapter navigation. 
+                      Plus, use our built-in audio reader to listen to books on the go.
+                    </p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 }}
+                    className={`p-6 rounded-2xl text-center sm:col-span-2 lg:col-span-1 ${
+                      darkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-amber-100 shadow-sm'
+                    }`}
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mx-auto mb-4">
+                      <FileUp className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="font-bold text-lg mb-2">Upload Your PDFs</h3>
+                    <p className={`text-sm leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Have your own digital books? Upload any PDF and read it right in your browser with our built-in PDF reader. 
+                      No downloads, no installations — just seamless reading.
+                    </p>
+                  </motion.div>
+                </div>
+
+                {/* Stats */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto"
+                >
+                  {[
+                    { label: 'Books', value: books.length + '+', icon: '📚' },
+                    { label: 'Authors', value: authors.length + '+', icon: '✍️' },
+                    { label: 'Chapters', value: books.reduce((sum, b) => sum + b.chapters.length, 0) + '+', icon: '📖' },
+                    { label: 'Genres', value: genres.length - 1, icon: '🏷️' },
+                  ].map((stat, i) => (
+                    <div key={i} className={`text-center p-4 rounded-xl ${darkMode ? 'bg-gray-800/50' : 'bg-amber-50'}`}>
+                      <div className="text-2xl mb-1">{stat.icon}</div>
+                      <div className="text-2xl font-bold text-amber-600">{stat.value}</div>
+                      <div className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{stat.label}</div>
+                    </div>
+                  ))}
+                </motion.div>
+              </div>
+            </div>
+
+            {/* ========== SITE FOOTER ========== */}
+            <footer className={`border-t ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-amber-50 border-amber-200'}`}>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {/* Brand */}
+                  <div className="sm:col-span-2 lg:col-span-1">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="p-2 rounded-lg bg-amber-600">
+                        <Book className="w-5 h-5 text-white" />
+                      </div>
+                      <span className="text-xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+                        BookVerse
+                      </span>
+                    </div>
+                    <p className={`text-sm leading-relaxed mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Your digital library for timeless classics. Read, discover, and enjoy the world's greatest literature — all in one place.
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <a href="#" className={`p-2 rounded-lg transition-colors ${darkMode ? 'hover:bg-gray-800 text-gray-400 hover:text-amber-500' : 'hover:bg-amber-100 text-gray-500 hover:text-amber-600'}`}>
+                        <Globe className="w-4 h-4" />
+                      </a>
+                      <a href="#" className={`p-2 rounded-lg transition-colors ${darkMode ? 'hover:bg-gray-800 text-gray-400 hover:text-amber-500' : 'hover:bg-amber-100 text-gray-500 hover:text-amber-600'}`}>
+                        <Mail className="w-4 h-4" />
+                      </a>
+                      <a href="#" className={`p-2 rounded-lg transition-colors ${darkMode ? 'hover:bg-gray-800 text-gray-400 hover:text-amber-500' : 'hover:bg-amber-100 text-gray-500 hover:text-amber-600'}`}>
+                        <Heart className="w-4 h-4" />
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Quick Links */}
+                  <div>
+                    <h4 className="font-bold text-sm mb-4 uppercase tracking-wider text-amber-600">Quick Links</h4>
+                    <ul className="space-y-2">
+                      {[
+                        { label: 'Home', href: '#' },
+                        { label: 'Top Books', href: '#top-books' },
+                        { label: 'Library', href: '#library' },
+                        { label: 'Authors', href: '#tags' },
+                        { label: 'PDF Reader', action: () => setCurrentPage('pdf') },
+                      ].map((link, i) => (
+                        <li key={i}>
+                          {link.action ? (
+                            <button
+                              onClick={link.action}
+                              className={`text-sm flex items-center gap-1.5 transition-colors ${darkMode ? 'text-gray-400 hover:text-amber-500' : 'text-gray-600 hover:text-amber-600'}`}
+                            >
+                              <ArrowRight className="w-3 h-3" />
+                              {link.label}
+                            </button>
+                          ) : (
+                            <a
+                              href={link.href}
+                              className={`text-sm flex items-center gap-1.5 transition-colors ${darkMode ? 'text-gray-400 hover:text-amber-500' : 'text-gray-600 hover:text-amber-600'}`}
+                            >
+                              <ArrowRight className="w-3 h-3" />
+                              {link.label}
+                            </a>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Genres */}
+                  <div>
+                    <h4 className="font-bold text-sm mb-4 uppercase tracking-wider text-amber-600">Genres</h4>
+                    <ul className="space-y-2">
+                      {genres.filter(g => g !== 'All').map((genre, i) => (
+                        <li key={i}>
+                          <button
+                            onClick={() => { setSelectedGenre(genre); document.getElementById('library')?.scrollIntoView({ behavior: 'smooth' }); }}
+                            className={`text-sm flex items-center gap-1.5 transition-colors ${darkMode ? 'text-gray-400 hover:text-amber-500' : 'text-gray-600 hover:text-amber-600'}`}
+                          >
+                            <ArrowRight className="w-3 h-3" />
+                            {genre}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Info */}
+                  <div>
+                    <h4 className="font-bold text-sm mb-4 uppercase tracking-wider text-amber-600">Information</h4>
+                    <ul className="space-y-2">
+                      {[
+                        { label: 'About Us', href: '#' },
+                        { label: 'Privacy Policy', href: '#' },
+                        { label: 'Terms of Service', href: '#' },
+                        { label: 'Contact', href: '#' },
+                      ].map((link, i) => (
+                        <li key={i}>
+                          <a
+                            href={link.href}
+                            className={`text-sm flex items-center gap-1.5 transition-colors ${darkMode ? 'text-gray-400 hover:text-amber-500' : 'text-gray-600 hover:text-amber-600'}`}
+                          >
+                            <ArrowRight className="w-3 h-3" />
+                            {link.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Bottom Bar */}
+                <div className={`mt-10 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-4 ${
+                  darkMode ? 'border-gray-800' : 'border-amber-200'
+                }`}>
+                  <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                    © 2026 BookVerse. All rights reserved. Made with ❤️ for book lovers everywhere.
+                  </p>
+                  <div className="flex items-center gap-4">
+                    <div className={`flex items-center gap-1.5 text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                      <Shield className="w-3.5 h-3.5" />
+                      <span>Secure Reading</span>
+                    </div>
+                    <div className={`flex items-center gap-1.5 text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                      <Globe className="w-3.5 h-3.5" />
+                      <span>Free & Open</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </footer>
           </motion.div>
         )}
 
         {currentPage === 'info' && selectedBook && (
           <motion.div key="info" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
-            <BookInfo book={selectedBook} darkMode={darkMode} onBack={goHome} onRead={startReading} />
+            <BookInfo 
+              book={selectedBook} 
+              darkMode={darkMode} 
+              onBack={goHome} 
+              onRead={startReading}
+              relatedBooks={getRelatedBooks(selectedBook)}
+              onBookClick={openBookInfo}
+            />
           </motion.div>
         )}
 
