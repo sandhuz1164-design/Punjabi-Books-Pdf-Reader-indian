@@ -3,9 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Book, Home, Search, BookOpen, Moon, Sun, Library, X, FileUp, Star } from 'lucide-react';
 import { books, genres, Book as BookType } from './data/books';
 import PDFReader from './components/PDFReader';
+import BookInfo from './components/BookInfo';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'reader' | 'pdf'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'info' | 'reader' | 'pdf'>('home');
   const [selectedBook, setSelectedBook] = useState<BookType | null>(null);
   const [currentChapter, setCurrentChapter] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
@@ -23,8 +24,12 @@ function App() {
     return matchesSearch && matchesGenre;
   });
 
-  const openBook = (book: BookType) => {
+  const openBookInfo = (book: BookType) => {
     setSelectedBook(book);
+    setCurrentPage('info');
+  };
+
+  const startReading = () => {
     setCurrentPage('reader');
     setCurrentChapter(0);
   };
@@ -106,7 +111,7 @@ function App() {
       </nav>
 
       <AnimatePresence mode="wait">
-        {currentPage === 'home' ? (
+        {currentPage === 'home' && (
           <motion.div
             key="home"
             initial={{ opacity: 0, y: 20 }}
@@ -243,7 +248,7 @@ function App() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      onClick={() => openBook(book)}
+                      onClick={() => openBookInfo(book)}
                       className={`group cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl ${
                         darkMode
                           ? 'bg-gray-800 border border-gray-700 hover:border-amber-600/50 hover:shadow-amber-600/10'
@@ -257,8 +262,13 @@ function App() {
                           alt={book.title}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
-                          <span className="text-white text-xs font-medium">Click to read →</span>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+                          <span className="text-white text-xs font-bold mb-1">{book.title}</span>
+                          <span className="text-white/80 text-[10px]">{book.author}</span>
+                          <div className="mt-2 flex items-center gap-1">
+                            <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
+                            <span className="text-white text-xs">{book.rating}</span>
+                          </div>
                         </div>
                       </div>
                       {/* Book Info */}
@@ -283,7 +293,7 @@ function App() {
                   ))}
                 </div>
               ) : (
-                /* Table View - 7 per row */
+                /* Table View */
                 <div className={`rounded-xl overflow-hidden border ${darkMode ? 'border-gray-700' : 'border-amber-200'}`}>
                   <div className="overflow-x-auto">
                     <table className="w-full">
@@ -308,7 +318,7 @@ function App() {
                             className={`cursor-pointer transition-colors ${
                               darkMode ? 'hover:bg-gray-800/50' : 'hover:bg-amber-50'
                             }`}
-                            onClick={() => openBook(book)}
+                            onClick={() => openBookInfo(book)}
                           >
                             <td className="px-4 py-3">
                               <img
@@ -343,8 +353,11 @@ function App() {
                               {book.pages}
                             </td>
                             <td className="px-4 py-3">
-                              <button className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium rounded-lg transition-colors shadow-sm">
-                                Read
+                              <button 
+                                onClick={(e) => { e.stopPropagation(); openBookInfo(book); }}
+                                className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium rounded-lg transition-colors shadow-sm"
+                              >
+                                View
                               </button>
                             </td>
                           </motion.tr>
@@ -365,7 +378,26 @@ function App() {
               )}
             </div>
           </motion.div>
-        ) : currentPage === 'pdf' ? (
+        )}
+
+        {currentPage === 'info' && selectedBook && (
+          <motion.div
+            key="info"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <BookInfo
+              book={selectedBook}
+              darkMode={darkMode}
+              onBack={goHome}
+              onRead={startReading}
+            />
+          </motion.div>
+        )}
+
+        {currentPage === 'pdf' && (
           <motion.div
             key="pdf"
             initial={{ opacity: 0 }}
@@ -375,7 +407,9 @@ function App() {
           >
             <PDFReader darkMode={darkMode} onBack={goHome} />
           </motion.div>
-        ) : (
+        )}
+
+        {currentPage === 'reader' && selectedBook && (
           <motion.div
             key="reader"
             initial={{ opacity: 0 }}
@@ -403,7 +437,7 @@ function App() {
                       </button>
                     </div>
                     <div className="space-y-1">
-                      {selectedBook?.chapters.map((chapter, index) => (
+                      {selectedBook.chapters.map((chapter, index) => (
                         <button
                           key={chapter.id}
                           onClick={() => { setCurrentChapter(index); setShowSidebar(false); }}
@@ -417,7 +451,7 @@ function App() {
                         >
                           <span className="font-medium">{chapter.id}.</span>
                           <span className="truncate">{chapter.title}</span>
-                          {isBookmarked(selectedBook?.id || '', chapter.id) && (
+                          {isBookmarked(selectedBook.id, chapter.id) && (
                             <span className="ml-auto text-amber-500">🔖</span>
                           )}
                         </button>
@@ -443,16 +477,16 @@ function App() {
                   </button>
                   <div className="flex items-center gap-3">
                     <img
-                      src={selectedBook?.coverImage}
-                      alt={selectedBook?.title}
+                      src={selectedBook.coverImage}
+                      alt={selectedBook.title}
                       className="w-10 h-14 object-cover rounded-md shadow-md hidden sm:block"
                     />
                     <div>
                       <h2 className="font-bold text-sm sm:text-base truncate max-w-[200px] sm:max-w-xs">
-                        {selectedBook?.title}
+                        {selectedBook.title}
                       </h2>
                       <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                        {selectedBook?.chapters[currentChapter]?.title}
+                        {selectedBook.chapters[currentChapter]?.title}
                       </p>
                     </div>
                   </div>
@@ -471,9 +505,9 @@ function App() {
                     A+
                   </button>
                   <button
-                    onClick={() => selectedBook && toggleBookmark(selectedBook.id, selectedBook.chapters[currentChapter].id)}
+                    onClick={() => toggleBookmark(selectedBook.id, selectedBook.chapters[currentChapter].id)}
                     className={`p-2 rounded-lg transition-colors ${
-                      isBookmarked(selectedBook?.id || '', selectedBook?.chapters[currentChapter]?.id || 0)
+                      isBookmarked(selectedBook.id, selectedBook.chapters[currentChapter].id)
                         ? 'text-amber-500'
                         : darkMode ? 'hover:bg-gray-700' : 'hover:bg-amber-100'
                     }`}
@@ -493,13 +527,13 @@ function App() {
                     transition={{ duration: 0.5 }}
                   >
                     <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-center">
-                      {selectedBook?.chapters[currentChapter]?.title}
+                      {selectedBook.chapters[currentChapter]?.title}
                     </h1>
                     <div
                       className={`leading-relaxed whitespace-pre-line ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}
                       style={{ fontSize: `${fontSize}px`, lineHeight: '1.8' }}
                     >
-                      {selectedBook?.chapters[currentChapter]?.content}
+                      {selectedBook.chapters[currentChapter]?.content}
                     </div>
                   </motion.div>
 
@@ -519,13 +553,13 @@ function App() {
                       ← Previous
                     </button>
                     <span className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                      {currentChapter + 1} of {selectedBook?.chapters.length}
+                      {currentChapter + 1} of {selectedBook.chapters.length}
                     </span>
                     <button
-                      onClick={() => setCurrentChapter(Math.min((selectedBook?.chapters.length || 1) - 1, currentChapter + 1))}
-                      disabled={currentChapter === (selectedBook?.chapters.length || 1) - 1}
+                      onClick={() => setCurrentChapter(Math.min(selectedBook.chapters.length - 1, currentChapter + 1))}
+                      disabled={currentChapter === selectedBook.chapters.length - 1}
                       className={`px-5 py-2.5 rounded-xl font-medium transition-all ${
-                        currentChapter === (selectedBook?.chapters.length || 1) - 1
+                        currentChapter === selectedBook.chapters.length - 1
                           ? 'opacity-30 cursor-not-allowed'
                           : 'bg-amber-600 hover:bg-amber-700 text-white shadow-lg shadow-amber-600/30'
                       }`}
