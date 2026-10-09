@@ -12,7 +12,7 @@ function App() {
   const [currentChapter, setCurrentChapter] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('All');
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [fontSize, setFontSize] = useState(18);
   const [showSidebar, setShowSidebar] = useState(false);
   const [bookmarks, setBookmarks] = useState<{ [key: string]: number[] }>({});
@@ -416,7 +416,7 @@ function App() {
 
               {/* Books Display */}
               {viewMode === 'grid' ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-6">
                   {filteredBooks.map((book, index) => (
                     <motion.div
                       key={book.id}
@@ -424,25 +424,46 @@ function App() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
                       onClick={() => openBookInfo(book)}
-                      className={`group cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl ${
-                        darkMode ? 'bg-gray-800 border border-gray-700 hover:border-amber-600/50' : 'bg-white border border-amber-100 hover:border-amber-300 hover:shadow-amber-200/50'
-                      }`}
+                      className="group cursor-pointer"
                     >
-                      <div className="relative aspect-[3/4] overflow-hidden">
-                        <img src={book.coverImage} alt={book.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
-                          <span className="text-white text-xs font-bold mb-1">{book.title}</span>
-                          <span className="text-white/80 text-[10px]">{book.author}</span>
-                          <div className="mt-2 flex items-center gap-1">
-                            <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
-                            <span className="text-white text-xs">{book.rating}</span>
+                      {/* 3D Book Container */}
+                      <div className="book-3d relative mx-auto" style={{ perspective: '1000px' }}>
+                        <div className="book-3d-inner relative transition-transform duration-500 group-hover:rotate-y-[-8deg] group-hover:translate-x-1">
+                          {/* Book Cover */}
+                          <div className="book-cover relative aspect-[2/3] rounded-r-md rounded-l-sm overflow-hidden shadow-book">
+                            <img 
+                              src={book.coverImage} 
+                              alt={book.title} 
+                              className="w-full h-full object-cover"
+                            />
+                            {/* Book spine highlight */}
+                            <div className="absolute inset-y-0 left-0 w-2 bg-gradient-to-r from-black/40 to-transparent"></div>
+                            {/* Glossy effect */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            {/* Hover overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+                              <span className="text-white text-xs font-bold mb-1 leading-tight">{book.title}</span>
+                              <span className="text-white/80 text-[10px]">{book.author}</span>
+                              <div className="mt-2 flex items-center gap-1">
+                                <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
+                                <span className="text-white text-xs">{book.rating}</span>
+                              </div>
+                              <button className="mt-2 w-full py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-bold rounded transition-colors">
+                                READ NOW
+                              </button>
+                            </div>
                           </div>
+                          {/* Book spine (side) */}
+                          <div className="absolute top-0 -left-1 w-2 h-full bg-gradient-to-r from-gray-800 to-gray-600 rounded-l-sm shadow-md transform -translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          {/* Book pages (right side) */}
+                          <div className="absolute top-1 -right-1 w-1 h-[calc(100%-8px)] bg-gradient-to-r from-gray-200 to-gray-100 rounded-r-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
                       </div>
-                      <div className="p-3">
+                      {/* Book info below */}
+                      <div className="mt-3 text-center">
                         <h3 className="font-bold text-sm leading-tight mb-0.5 truncate">{book.title}</h3>
                         <p className={`text-xs truncate ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{book.author}</p>
-                        <div className="flex items-center justify-between mt-2">
+                        <div className="flex items-center justify-center gap-2 mt-1.5">
                           <div className="flex items-center gap-0.5">
                             <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
                             <span className="text-xs font-medium">{book.rating}</span>
