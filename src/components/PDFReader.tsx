@@ -239,17 +239,17 @@ export default function PDFReader({ darkMode, onBack }: PDFReaderProps) {
   // Upload screen
   if (!pdfDoc) {
     return (
-      <div className="max-w-5xl mx-auto px-4 py-12">
+      <div className="max-w-3xl mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
+          className="text-center mb-6"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-3 bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-            PDF Book Reader
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2 bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+            PDF Reader
           </h2>
-          <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-            Upload any PDF book and read it right here in your browser
+          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            Upload any PDF and read it in your browser
           </p>
         </motion.div>
 
@@ -258,7 +258,7 @@ export default function PDFReader({ darkMode, onBack }: PDFReaderProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onClick={() => fileInputRef.current?.click()}
-          className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all hover:scale-[1.01] ${
+          className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all hover:scale-[1.01] ${
             darkMode
               ? 'border-gray-600 hover:border-amber-500 bg-gray-800/50'
               : 'border-amber-300 hover:border-amber-500 bg-white'
@@ -271,28 +271,22 @@ export default function PDFReader({ darkMode, onBack }: PDFReaderProps) {
             onChange={handleFileUpload}
             className="hidden"
           />
-          <div className={`w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center ${
+          <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
             darkMode ? 'bg-amber-900/30' : 'bg-amber-100'
           }`}>
-            <Upload className={`w-12 h-12 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} />
+            <Upload className={`w-8 h-8 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} />
           </div>
-          <h3 className="text-xl font-semibold mb-2">Drop your PDF here or click to browse</h3>
-          <p className={`text-sm mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-            Supports any PDF file • Read directly in browser • No upload to server
+          <h3 className="text-base font-semibold mb-1">Click to upload PDF</h3>
+          <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+            No file size limit • Stays in your browser
           </p>
-          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm ${
-            darkMode ? 'bg-gray-700 text-gray-300' : 'bg-amber-50 text-amber-700'
-          }`}>
-            <FileText className="w-4 h-4" />
-            <span>Maximum file size: No limit</span>
-          </div>
         </motion.div>
 
         {error && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-500 text-center"
+            className="mt-3 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-500 text-center text-sm"
           >
             {error}
           </motion.div>
@@ -302,38 +296,38 @@ export default function PDFReader({ darkMode, onBack }: PDFReaderProps) {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="mt-8 text-center"
+            className="mt-6 text-center"
           >
-            <div className="inline-block w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
-            <p className={`mt-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Loading PDF...</p>
+            <div className="inline-block w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+            <p className={`mt-2 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Loading...</p>
           </motion.div>
         )}
 
-        {/* Features Section */}
+        {/* Features - Compact */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mt-12"
+          className="mt-8"
         >
-          <h3 className="text-xl font-bold mb-6 text-center">Reader Features</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <h3 className="text-sm font-bold mb-3 text-center">Features</h3>
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
             {[
-              { icon: ZoomIn, label: "Zoom In/Out" },
-              { icon: RotateCw, label: "Rotate Pages" },
+              { icon: ZoomIn, label: "Zoom" },
+              { icon: RotateCw, label: "Rotate" },
               { icon: Maximize2, label: "Fullscreen" },
               { icon: Grid3x3, label: "Thumbnails" },
-              { icon: AlignJustify, label: "Fit to Page" },
+              { icon: AlignJustify, label: "Fit Page" },
               { icon: Search, label: "Search" },
             ].map((feature, i) => (
               <div
                 key={i}
-                className={`p-4 rounded-xl text-center ${
+                className={`p-2.5 rounded-lg text-center ${
                   darkMode ? 'bg-gray-800' : 'bg-white border border-amber-100'
                 }`}
               >
-                <feature.icon className={`w-8 h-8 mx-auto mb-2 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} />
-                <p className="text-sm font-medium">{feature.label}</p>
+                <feature.icon className={`w-5 h-5 mx-auto mb-1 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} />
+                <p className="text-[10px] font-medium">{feature.label}</p>
               </div>
             ))}
           </div>
