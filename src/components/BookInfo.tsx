@@ -153,22 +153,27 @@ export default function BookInfo({ book, darkMode, onBack, onRead, relatedBooks 
 
       {/* Related Books Section */}
       {relatedBooks.length > 0 && (
-        <div className="mt-10">
+        <div className="mt-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
+            className="mb-6"
           >
-            <h2 className="text-lg font-bold mb-1 flex items-center gap-2">
-              <Library className="w-4 h-4 text-amber-600" />
-              Related Books
-            </h2>
-            <p className={`text-sm mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-              More books in the <span className="font-semibold text-amber-600">{book.genre}</span> genre you might enjoy
+            <div className="flex items-center gap-2 mb-2">
+              <Library className="w-5 h-5 text-amber-600" />
+              <h2 className="text-xl font-bold">You Might Also Like</h2>
+            </div>
+            <p className={`text-sm leading-relaxed mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Discover more captivating books in the <span className="font-semibold text-amber-600">{book.genre}</span> genre. 
+              These carefully selected titles share similar themes, writing styles, and literary merit with <em>{book.title}</em>.
+            </p>
+            <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+              Perfect for readers who enjoyed {book.title} by {book.author}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
             {relatedBooks.map((relBook, index) => (
               <motion.div
                 key={relBook.id}
@@ -176,38 +181,55 @@ export default function BookInfo({ book, darkMode, onBack, onRead, relatedBooks 
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35 + index * 0.08 }}
                 onClick={() => onBookClick?.(relBook)}
-                className={`group cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+                className={`group cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 ${
                   darkMode
-                    ? 'bg-gray-800 border border-gray-700 hover:border-amber-600/50'
-                    : 'bg-white border border-amber-100 hover:border-amber-300 hover:shadow-amber-200/50'
+                    ? 'bg-gray-800 border border-gray-700 hover:border-amber-600/50 hover:shadow-amber-900/20'
+                    : 'bg-white border border-amber-100 hover:border-amber-400 hover:shadow-amber-200/60'
                 }`}
               >
                 {/* Book Cover */}
                 <div className="relative aspect-[2/3] overflow-hidden">
                   <img
                     src={relBook.coverImage}
-                    alt={relBook.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    alt={`${relBook.title} by ${relBook.author}`}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
-                    <span className="text-white text-xs font-bold">View Details →</span>
+                  {/* Overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                    <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                      <p className="text-white text-xs leading-relaxed line-clamp-2 mb-2">
+                        {relBook.description.slice(0, 80)}...
+                      </p>
+                      <button className="w-full py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg transition-colors">
+                        Read Now
+                      </button>
+                    </div>
+                  </div>
+                  {/* Rating badge */}
+                  <div className={`absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm text-xs font-bold flex items-center gap-1 ${
+                    darkMode ? 'bg-black/60 text-white' : 'bg-white/90 text-gray-900'
+                  }`}>
+                    <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                    {relBook.rating}
                   </div>
                 </div>
                 {/* Book Info */}
-                <div className="p-3">
-                  <h3 className="font-bold text-sm leading-tight mb-1 truncate">{relBook.title}</h3>
-                  <p className={`text-xs truncate mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                    {relBook.author}
+                <div className="p-4">
+                  <h3 className="font-bold text-sm leading-tight mb-1 line-clamp-2 min-h-[2.5rem]">
+                    {relBook.title}
+                  </h3>
+                  <p className={`text-xs mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                    by {relBook.author}
                   </p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                      <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
-                      <span className="text-xs font-medium">{relBook.rating}</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                  <div className="flex items-center justify-between pt-2 border-t border-dashed border-opacity-30 ${darkMode ? 'border-gray-600' : 'border-amber-200'}">
+                    <span className={`text-[10px] px-2 py-1 rounded-full font-medium ${
                       darkMode ? 'bg-amber-900/30 text-amber-400' : 'bg-amber-100 text-amber-700'
                     }`}>
                       {relBook.genre}
+                    </span>
+                    <span className={`text-[10px] ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                      {relBook.pages} pages
                     </span>
                   </div>
                 </div>

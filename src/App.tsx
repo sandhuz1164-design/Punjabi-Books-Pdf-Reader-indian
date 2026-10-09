@@ -738,6 +738,145 @@ function App() {
               </div>
             </div>
 
+            {/* ========== WHY READ CLASSICS - SEO SECTION ========== */}
+            <div className={`py-14 border-t ${darkMode ? 'border-gray-800' : 'border-amber-100'}`}>
+              <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <h2 className="text-xl sm:text-2xl font-bold text-center mb-6">
+                    Why Read Classic Books Online?
+                  </h2>
+                  <div className={`prose max-w-none text-sm leading-relaxed space-y-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <p>
+                      Classic literature has stood the test of time for a reason. These timeless works — from Sun Tzu's <strong>The Art of War</strong> to 
+                      Marcus Aurelius's <strong>Meditations</strong>, from Lewis Carroll's <strong>Alice's Adventures in Wonderland</strong> to 
+                      Arthur Conan Doyle's <strong>A Study in Scarlet</strong> — continue to inspire readers across generations. 
+                      At BookVerse, we believe everyone deserves free access to the world's greatest literary works.
+                    </p>
+                    <p>
+                      Reading classic books online offers numerous benefits: improved vocabulary, deeper understanding of human nature, 
+                      enhanced critical thinking skills, and a connection to centuries of accumulated wisdom. Whether you're studying 
+                      philosophy, exploring fiction, or diving into mystery novels, our digital library provides a comfortable reading 
+                      experience with adjustable fonts, bookmarking, and chapter-by-chapter navigation.
+                    </p>
+                    <p>
+                      Our collection spans multiple genres including <strong>Philosophy</strong>, <strong>Fiction</strong>, 
+                      <strong> Mystery</strong>, and <strong>Romance</strong>. Each book is presented in a clean, distraction-free format 
+                      that lets you focus on what matters most — the story. Plus, with our built-in audio reader, you can listen to 
+                      books while commuting, exercising, or relaxing at home.
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+
+            {/* ========== FAQ SECTION - SEO ========== */}
+            <div className={`py-14 border-t ${darkMode ? 'border-gray-800 bg-gradient-to-b from-transparent to-gray-800/30' : 'border-amber-100 bg-gradient-to-b from-transparent to-amber-50/50'}`}>
+              <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="text-center mb-8"
+                >
+                  <h2 className="text-xl sm:text-2xl font-bold mb-2">Frequently Asked Questions</h2>
+                  <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Everything you need to know about BookVerse
+                  </p>
+                </motion.div>
+
+                <div className="space-y-3">
+                  {[
+                    {
+                      q: "Is BookVerse free to use?",
+                      a: "Yes! BookVerse is completely free. Read all classic books online without any subscription or hidden fees. Our mission is to make great literature accessible to everyone."
+                    },
+                    {
+                      q: "What books are available on BookVerse?",
+                      a: "We offer a curated collection of timeless classics including The Art of War, Meditations, Alice's Adventures in Wonderland, A Study in Scarlet, Pride and Prejudice, The Great Gatsby, Don Quixote, and more across Philosophy, Fiction, Mystery, and Romance genres."
+                    },
+                    {
+                      q: "Can I upload my own PDF books?",
+                      a: "Absolutely! Use our built-in PDF Reader to upload and read any PDF document directly in your browser. No software installation required."
+                    },
+                    {
+                      q: "Can I listen to books instead of reading?",
+                      a: "Yes! Our built-in audio reader converts book text to speech, allowing you to listen while you multitask. Perfect for commuters and multitaskers."
+                    },
+                    {
+                      q: "Does BookVerse work on mobile devices?",
+                      a: "BookVerse is fully responsive and works beautifully on phones, tablets, laptops, and desktops. Read anywhere, anytime."
+                    },
+                  ].map((faq, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.08 }}
+                      className={`p-4 rounded-xl ${
+                        darkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-amber-100 shadow-sm'
+                      }`}
+                    >
+                      <h3 className="font-bold text-sm mb-1.5 flex items-start gap-2">
+                        <span className="text-amber-600 font-bold">Q:</span>
+                        <span>{faq.q}</span>
+                      </h3>
+                      <p className={`text-sm leading-relaxed pl-5 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        <span className="font-bold text-amber-600 mr-1">A:</span>
+                        {faq.a}
+                      </p>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* ========== POPULAR BOOKS DESCRIPTION - SEO ========== */}
+            <div className={`py-14 border-t ${darkMode ? 'border-gray-800' : 'border-amber-100'}`}>
+              <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <h2 className="text-xl sm:text-2xl font-bold text-center mb-6">
+                    Popular Books on BookVerse
+                  </h2>
+                  <div className={`text-sm leading-relaxed space-y-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <p>
+                      <strong>The Art of War by Sun Tzu</strong> — This ancient Chinese military treatise from the 5th century BC remains one of the most 
+                      influential works on strategy ever written. Its 13 chapters cover everything from laying plans to waging war, offering timeless 
+                      wisdom that applies far beyond the battlefield. Business leaders, athletes, and strategists worldwide continue to study its teachings.
+                    </p>
+                    <p>
+                      <strong>Meditations by Marcus Aurelius</strong> — Written by the Roman Emperor as personal reflections on Stoic philosophy, 
+                      this masterpiece offers practical guidance on living a virtuous life. From managing emotions to finding inner peace, 
+                      Marcus Aurelius's wisdom remains remarkably relevant nearly 2,000 years after it was penned.
+                    </p>
+                    <p>
+                      <strong>Alice's Adventures in Wonderland by Lewis Carroll</strong> — A beloved fantasy novel that has captivated readers since 1865. 
+                      Follow Alice as she tumbles down the rabbit hole into a whimsical world of talking animals, peculiar characters, and mind-bending logic. 
+                      A masterpiece of nonsense literature that continues to inspire imagination in readers of all ages.
+                    </p>
+                    <p>
+                      <strong>Pride and Prejudice by Jane Austen</strong> — The quintessential romance novel that defined a genre. Austen's sharp wit, 
+                      memorable characters, and insightful social commentary make this a must-read for anyone who appreciates brilliant storytelling 
+                      and the complexities of human relationships.
+                    </p>
+                    <p>
+                      <strong>The Great Gatsby by F. Scott Fitzgerald</strong> — A defining novel of the Jazz Age that explores themes of wealth, 
+                      love, and the American Dream. Fitzgerald's lyrical prose and unforgettable characters create a portrait of 1920s America 
+                      that resonates as powerfully today as when it was first published.
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+
             {/* ========== SITE FOOTER ========== */}
             <footer className={`border-t ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-amber-50 border-amber-200'}`}>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
