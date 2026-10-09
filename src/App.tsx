@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Book, Home, Search, BookOpen, Moon, Sun, Library, X } from 'lucide-react';
+import { Book, Home, Search, BookOpen, Moon, Sun, Library, X, FileUp } from 'lucide-react';
 import { books, genres, Book as BookType } from './data/books';
+import PDFReader from './components/PDFReader';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'reader'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'reader' | 'pdf'>('home');
   const [selectedBook, setSelectedBook] = useState<BookType | null>(null);
   const [currentChapter, setCurrentChapter] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
@@ -54,7 +55,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3 cursor-pointer" onClick={goHome}>
-              <div className={`p-2 rounded-lg ${darkMode ? 'bg-amber-600' : 'bg-amber-600'}`}>
+              <div className="p-2 rounded-lg bg-amber-600">
                 <Book className="w-6 h-6 text-white" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
@@ -62,13 +63,29 @@ function App() {
               </span>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
+              {/* PDF Reader Button */}
+              <button
+                onClick={() => setCurrentPage('pdf')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                  currentPage === 'pdf'
+                    ? 'bg-red-500 text-white'
+                    : darkMode
+                      ? 'hover:bg-gray-700 text-gray-300'
+                      : 'hover:bg-amber-100 text-gray-700'
+                }`}
+              >
+                <FileUp className="w-4 h-4" />
+                <span className="hidden sm:inline">PDF Reader</span>
+              </button>
+
               <button
                 onClick={() => setDarkMode(!darkMode)}
                 className={`p-2 rounded-full transition-colors ${darkMode ? 'hover:bg-gray-700 text-yellow-400' : 'hover:bg-amber-100 text-amber-700'}`}
               >
                 {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </button>
+
               {currentPage === 'home' ? (
                 <div className="flex items-center gap-2">
                   <Library className="w-5 h-5 text-amber-600" />
@@ -117,9 +134,36 @@ function App() {
                   transition={{ delay: 0.2 }}
                   className={`text-lg sm:text-xl max-w-2xl mx-auto mb-8 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}
                 >
-                  Discover, read, and enjoy timeless classics from the comfort of your screen.
+                  Discover, read, and enjoy timeless classics — or upload your own PDF books.
                   A beautiful reading experience awaits.
                 </motion.p>
+
+                {/* Quick Actions */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25 }}
+                  className="flex flex-wrap justify-center gap-3 mb-8"
+                >
+                  <button
+                    onClick={() => setCurrentPage('pdf')}
+                    className="flex items-center gap-2 px-5 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-red-500/20 hover:shadow-red-500/40"
+                  >
+                    <FileUp className="w-4 h-4" />
+                    Read a PDF Book
+                  </button>
+                  <a
+                    href="#library"
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all ${
+                      darkMode
+                        ? 'bg-gray-800 hover:bg-gray-700 text-white border border-gray-600'
+                        : 'bg-white hover:bg-amber-50 text-gray-800 border border-amber-200 shadow-sm'
+                    }`}
+                  >
+                    <BookOpen className="w-4 h-4" />
+                    Browse Library
+                  </a>
+                </motion.div>
 
                 {/* Search Bar */}
                 <motion.div
@@ -145,7 +189,7 @@ function App() {
             </div>
 
             {/* Genre Filter */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div id="library" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
               <div className="flex flex-wrap gap-2">
                 {genres.map(genre => (
                   <button
@@ -224,6 +268,16 @@ function App() {
                 </div>
               )}
             </div>
+          </motion.div>
+        ) : currentPage === 'pdf' ? (
+          <motion.div
+            key="pdf"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <PDFReader darkMode={darkMode} onBack={goHome} />
           </motion.div>
         ) : (
           <motion.div
