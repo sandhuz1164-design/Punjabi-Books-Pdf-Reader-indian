@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Book, Home, Search, BookOpen, Moon, Sun, Library, X, FileUp, Star } from 'lucide-react';
+import { Book, Home, Search, BookOpen, Moon, Sun, Library, X, FileUp, Star, Quote, Users } from 'lucide-react';
 import { books, genres, Book as BookType } from './data/books';
+import { authors } from './data/authors';
 import PDFReader from './components/PDFReader';
 import BookInfo from './components/BookInfo';
 
@@ -189,6 +190,91 @@ function App() {
                     }`}
                   />
                 </motion.div>
+              </div>
+            </div>
+
+            {/* Featured Authors Section */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="text-center mb-10"
+              >
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <Users className="w-6 h-6 text-amber-600" />
+                  <h2 className="text-3xl font-bold">Featured Authors</h2>
+                </div>
+                <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Discover timeless wisdom from the world's greatest literary minds
+                </p>
+              </motion.div>
+
+              {/* Authors Grid - 5x2 layout */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {authors.map((author, index) => (
+                  <motion.div
+                    key={author.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 + index * 0.05 }}
+                    onClick={() => {
+                      setSearchQuery(author.name);
+                      document.getElementById('library')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className={`group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl ${
+                      darkMode
+                        ? 'bg-gray-800 border border-gray-700 hover:border-amber-600/50'
+                        : 'bg-white border border-amber-100 hover:border-amber-300 hover:shadow-amber-200/50'
+                    }`}
+                  >
+                    {/* Author Avatar */}
+                    <div className={`relative h-32 bg-gradient-to-br ${author.color} flex items-center justify-center overflow-hidden`}>
+                      <span className="text-5xl font-bold text-white/90 group-hover:scale-110 transition-transform duration-300">
+                        {author.initials}
+                      </span>
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                      {/* Quote icon */}
+                      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Quote className="w-5 h-5 text-white/80" />
+                      </div>
+                    </div>
+
+                    {/* Author Info */}
+                    <div className="p-4">
+                      <h3 className="font-bold text-sm leading-tight mb-1 truncate">{author.name}</h3>
+                      <div className="flex items-center gap-1 mb-2">
+                        <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                          {author.nationality}
+                        </span>
+                        <span className={`text-xs ${darkMode ? 'text-gray-600' : 'text-gray-300'}`}>•</span>
+                        <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                          {author.era}
+                        </span>
+                      </div>
+                      <p className={`text-xs line-clamp-2 mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        {author.bio}
+                      </p>
+                      {/* Quote */}
+                      <div className={`text-xs italic line-clamp-2 pt-2 border-t ${
+                        darkMode ? 'border-gray-700 text-gray-500' : 'border-amber-100 text-gray-500'
+                      }`}>
+                        "{author.quote}"
+                      </div>
+                      {/* Genre badge */}
+                      <div className="flex items-center justify-between mt-3">
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full ${
+                          darkMode ? 'bg-amber-900/30 text-amber-400' : 'bg-amber-100 text-amber-700'
+                        }`}>
+                          {author.genre}
+                        </span>
+                        <span className={`text-[10px] ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                          {author.bookCount} {author.bookCount === 1 ? 'book' : 'books'}
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </div>
 
