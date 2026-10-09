@@ -9,6 +9,7 @@ export interface Book {
   title: string;
   author: string;
   cover: string;
+  coverImage: string;
   genre: string;
   description: string;
   rating: number;
@@ -22,6 +23,7 @@ export const books: Book[] = [
     title: "The Art of War",
     author: "Sun Tzu",
     cover: "📕",
+    coverImage: "https://image.qwenlm.ai/generated-images/f86181c4-8ed9-415b-805a-a77fd4c5b405/_result.png",
     genre: "Philosophy",
     description: "An ancient Chinese military treatise dating from the Late Spring and Autumn Period. The work is composed of 13 chapters, each devoted to a different set of arguments relating to warfare.",
     rating: 4.8,
@@ -178,6 +180,7 @@ Hence the saying: If you know the enemy and know yourself, you need not fear the
     title: "Meditations",
     author: "Marcus Aurelius",
     cover: "📘",
+    coverImage: "https://image.qwenlm.ai/generated-images/9d46058e-461f-4ef8-bd2f-26ced5a0aca4/_result.png",
     genre: "Philosophy",
     description: "Written in Greek by the Roman Emperor Marcus Aurelius between 161 and 180 AD, Meditations is a series of personal writings and notes to himself, setting forth his ideas on Stoic philosophy.",
     rating: 4.7,
@@ -266,6 +269,7 @@ When you are offended at any man's fault, turn to yourself and study your own fa
     title: "Alice's Adventures in Wonderland",
     author: "Lewis Carroll",
     cover: "📗",
+    coverImage: "https://image.qwenlm.ai/generated-images/f6010121-3e4b-4327-9816-d99043b99b0b/_result.png",
     genre: "Fiction",
     description: "Alice's Adventures in Wonderland is an 1865 English novel by Lewis Carroll. It details the story of a young girl named Alice, who falls through a rabbit hole into a subterranean fantasy world.",
     rating: 4.5,
@@ -343,6 +347,7 @@ As she said this she looked down at her hands, and was surprised to see that she
     title: "A Study in Scarlet",
     author: "Arthur Conan Doyle",
     cover: "📙",
+    coverImage: "https://image.qwenlm.ai/generated-images/b55af155-1403-4423-b625-df3addb67844/_result.png",
     genre: "Mystery",
     description: "A Study in Scarlet is an 1887 detective novel by British writer Arthur Conan Doyle. The story marks the first appearance of Sherlock Holmes and his companion Dr. John Watson.",
     rating: 4.6,
@@ -400,6 +405,7 @@ I expressed my eagerness to meet him, and Stamford promised to introduce us.`
     title: "Pride and Prejudice",
     author: "Jane Austen",
     cover: "📕",
+    coverImage: "https://image.qwenlm.ai/generated-images/13ed3582-55fb-491e-a340-99174af67400/_result.png",
     genre: "Romance",
     description: "Pride and Prejudice is a romantic novel of manners written by Jane Austen in 1813. The novel follows the character development of Elizabeth Bennet, the dynamic protagonist who learns about the repercussions of hasty judgments.",
     rating: 4.7,
@@ -467,6 +473,7 @@ Mr. Bennet was so odd a mixture of quick parts, sarcastic humour, reserve, and c
     title: "The Great Gatsby",
     author: "F. Scott Fitzgerald",
     cover: "📗",
+    coverImage: "https://image.qwenlm.ai/generated-images/0d130ce7-3e16-4d74-9345-1faa96d26e05/_result.png",
     genre: "Fiction",
     description: "The Great Gatsby is a 1925 novel by American writer F. Scott Fitzgerald. Set in the Jazz Age on Long Island, the novel depicts narrator Nick Carraway's interactions with mysterious millionaire Jay Gatsby.",
     rating: 4.4,
@@ -496,6 +503,62 @@ Across the courtesy bay the white palaces of fashionable East Egg glittered alon
 Her husband, among various physical accomplishments, had been one of the most powerful ends that ever played football at New Haven—a national figure in a way, one of those men who reach such an acute limited excellence at twenty-one that everything afterward savours of anticlimax. His family were enormously wealthy—even in college his freedom with money was a matter for reproach—but now he'd left Chicago and come East in a fashion that rather took your breath away: for instance, he'd brought down a string of polo ponies from Lake Forest. It was hard to realize that a man in my own generation was wealthy enough to do that.
 
 Why they came East I don't know. They had spent a year in France for no particular reason, and then drifted here and there unrestfully wherever people played polo and were rich together. This was a permanent move, said Daisy over the telephone, but I didn't believe it—I had no sight into Daisy's heart, but I felt that Tom would drift on forever seeking, a little wistfully, for the dramatic turbulence of some irrecoverable football game.`
+      }
+    ]
+  },
+  {
+    id: "don-quixote",
+    title: "Don Quixote",
+    author: "Miguel de Cervantes",
+    cover: "📙",
+    coverImage: "https://image.qwenlm.ai/generated-images/bd1e4698-68c8-4c25-80f1-bf3fb772df4d/_result.png",
+    genre: "Fiction",
+    description: "Don Quixote is a Spanish novel by Miguel de Cervantes. It is regarded as the most influential work of literature from the Spanish Golden Age and the entire Spanish literary canon.",
+    rating: 4.3,
+    pages: 863,
+    chapters: [
+      {
+        id: 1,
+        title: "Chapter 1 - Which treats of the character and pursuits of the famous gentleman Don Quixote of La Mancha",
+        content: `In a village of La Mancha, the name of which I have no desire to call to mind, there lived, not long since, one of those gentlemen that keep a lance in the lance-rack, an old buckler, a lean hack, and a greyhound for coursing. An olla of rather more beef than mutton, a salad on most nights, scraps on Saturdays, lentils on Fridays, and a pigeon or so extra on Sundays, made away with three-quarters of his income. The rest of it went in a doublet of fine cloth and velvet breeches and shoes to match for holidays, while on week-days he made a brave figure in his best homespun. He had in his house a housekeeper past forty, a niece under twenty, and a lad for the field and market-place, who used to saddle the hack as well as handle the bill-hook. The above-mentioned age of our gentleman bordered upon fifty; he was of a hardy habit, spare, gaunt-featured, a very early riser and a great sportsman. They will have it his surname was Quixada or Quesada, for herein there is some difference of opinion among the authors who treat of the subject; although from very probable conjectures it may be gathered that he was called Quexana. This, however, is of but little importance to our tale; it will be enough not to stray a hair's breadth from the truth in the telling of it.
+
+You must know, then, that the above-named gentleman whenever he was at leisure (which was mostly all the year round) gave himself up to reading books of chivalry with such ardour and avidity that he almost entirely neglected the pursuit of his field-sports, and even the management of his property; and to such a point did his eagerness and infatuation go that he sold many an acre of tillageland to buy books of chivalry to read, and brought home as many as he could get of them.
+
+And of all of them none pleased him so much as those composed by the famous Feliciano de Silva, for the clearness of his prose and those intricate reasonings of his seemed to him pearls of price, especially when he came to read the challenges and letters of defiance, in which he found written: "The reason of the unreason that is done to my reason so weakens my reason that with reason I complain of your beauty."
+
+Or again: "The high heavens that with your divinity divinely fortify you with the stars, make you meritorious of the merit your highness deserves."
+
+The poor gentleman lost his wits over trying to understand them, and to extract the meaning from them that even Aristotle himself, if he came to life again for that special purpose, would not make out or comprehend. He was not very well satisfied with the wounds Don Belianis gave and received, because he thought that, however cleverly the surgeons might cure him, he would not escape being covered all over with scars and marks on his face and body; although, however, he praised the author for concluding his book with the promise of that interminable adventure, and more than once he was tempted to take up the pen and finish it himself, as is there proposed, and he would have certainly done so, and even carried it out, had he not been diverted from it by other and more important thoughts.
+
+He had many a quarrel with the curate of his village (a learned man and a graduate of Siguenza) as to which was the better knight, Palmerin of England or Amadis of Gaul; but Master Nicholas, the barber of the same place, used to say that none came up to the Knight of Phoebus, and that if there was any one to compare with him it was Don Galaor, the brother of Amadis of Gaul, because he was a man for everything, not a dainty knight, or lachrymose like his brother, and in matters of valour no whit behind him.
+
+In short, he became so absorbed in his books that he spent the night reading from dusk till dawn, and the day from dawn till dusk, until so little sleep and so much reading dried up his brain and caused him to lose his wits. His fancy became filled with all that he read in them, enchantments, quarrels, battles, challenges, wounds, wooings, loves, distresses, and absurdities of impossible sort; and the stuff he read got so deeply into his mind that he came to believe no story in the world so true as the most impossible inventions of those he read.
+
+He used to say that the Cid Ruy Diaz was a very good knight, but that he was not to be compared with the Knight of the Burning Sword, who with a single back-stroke cut in half two fierce and monstrous giants. Better still did he agree with Bernardo del Carpio, because at Roncesvalles he slew the enchanted Roland, availing himself of the device of Hercules when he strangled Antaeus between his arms.
+
+He used to praise highly the giant Morgante, because, although he was of the giant race and therefore arrogant, he was affable and well-bred. But above all he approved of Reinaldos of Montalban, and still more of his marvellous invention, the wooden horse that he used to carry about with him, and which carried him through the air as fast as any devil; and of the honey that he is said to have poured into the beard of Roland when he found him asleep, after having administered it to him from the helmet of gold.
+
+He gave a quack for the traitor Ganelon; and he would have given his housekeeper, and his niece into the bargain, for a chance of kicking him well.
+
+In short, his wits being quite gone, he hit upon the strangest notion that ever madman in this world hit upon, and that was that he fancied it was right and requisite, as well for the increase of his own honour as for the service of his country, to become a knight-errant, roaming the world over in full armour and on horseback in quest of adventures, and putting in practice himself all that he had read of as being the usual practices of knights-errant; righting every kind of wrong, and exposing himself to peril and danger from which, in the issue, he was to reap eternal renown and fame.
+
+Already the poor man saw himself crowned by the might of his arm, at the very least, Emperor of Trebizond; so that, led away by these delightful fancies, he made haste to put his design into execution. The first thing he did was to clean up some old armour that had been left by his great-grandfather, which, eaten with rust and covered with mildew, had lain for ages forgotten in a corner. He cleaned and mended it as best he could, but he noticed that it had one great defect, that it had no closed helmet, but only a morion, or simple headpiece.
+
+However, his ingenuity supplied this defect, for with some pasteboard he made a sort of half-helmet that fitted on to the morion and gave it the appearance of a closed helmet. Then, to try if it was strong enough and would stand the risk of a cut, he drew his sword and gave it a couple of slashes, and the first blow and the first thing he did was to undo what he had taken a week to do. The ease with which he had knocked it to pieces was not at all to his taste, and to guard against that danger he set to work again, putting bars of iron on the inside in such a way that he said he was satisfied with its strength; and without choosing to make any fresh experiments on it, he passed it and adopted it as a helmet of the most perfect construction.
+
+He then went to look after his hack, and though the beast had more quarters than a real and the skin was more cracked than a coin, he thought neither Bucephalus of Alexander nor Babieca of the Cid could compare with him. Four days he spent in thinking what name to give him, because (as he said to himself) it was not fitting that a horse so famous belonging to a knight so famous should be without a distinguished name; and so he tried to adapt it to his new condition, thinking that as his master was going to be a wandering knight, it was only right that his horse should be a steed, as was the custom in olden times.
+
+After many names he formed and erased, added to, removed, and changed from one to another in his memory and fancy, at last he decided to call him Rocinante, a name that seemed to him lofty, sonorous, and significant of his having been a hack before he became what he now was, the first and foremost of all the hacks in the world.
+
+Having given his horse such a satisfactory name, he was anxious to give himself one no less so, and this took him eight days more, and at last he made up his mind to call himself Don Quixote; whence, as has been said, the authors of this veracious history have inferred that his name was no doubt Quixada, and not Quesada as others would have it.
+
+But recollecting that the valiant Amadis, not content with calling himself Amadis simply, added to his name the name of his kingdom and country to make it famous, and called himself Amadis of Gaul, he, like a true knight, determined to add to his own the name of his country, and call himself Don Quixote of La Mancha, whereby, in his opinion, he fully set forth his lineage and country, and did honour to it by taking his surname from it.
+
+So then, his armour being cleaned, his morion turned into a closed helmet, his hack named, and himself christened, he perceived that there was nothing wanting now but to look out for a lady to be in love with; for a knight-errant without love was like a tree without leaves or fruit, or a body without a soul.
+
+He said to himself, "If, for my sins or for my good fortune, I meet some giant hereabouts on the road, which commonly happens to knights-errant, and I overthrow him in the encounter, or劈 him in halves, or in short vanquish and subdue him, will it not be well to have someone to send him to as a present, that he may come in and fall on his knees before my sweet lady, and say in a humble, submissive voice: 'I am the giant Caraculiambro, lord of the island of Malindrania, vanquished in single combat by the never sufficiently extolled knight Don Quixote of La Mancha, who has commanded me to present myself before your grace, that your greatness may dispose of me at your pleasure'?"
+
+Oh, how our good gentleman enjoyed himself when he had said this, and still more when he had found out someone to call his lady! It happened that there was a very good-looking farm-girl in a village near his own, with whom he had been at one time in love, though, as is understood, she never knew it nor was ever told so. Her name was Aldonza Lorenzo, and her he thought it well to choose as the lady of his thoughts; and he sought a name for her that should not be far from a princess's or great lady's, and he called her Dulcinea del Toboso, for she was a native of El Toboso; a name that seemed to him musical, uncommon, and significant, like all the others he had given to himself and his belongings.`
       }
     ]
   }

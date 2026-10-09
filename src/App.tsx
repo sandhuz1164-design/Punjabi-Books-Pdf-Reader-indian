@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Book, Home, Search, BookOpen, Moon, Sun, Library, X, FileUp } from 'lucide-react';
+import { Book, Home, Search, BookOpen, Moon, Sun, Library, X, FileUp, Star } from 'lucide-react';
 import { books, genres, Book as BookType } from './data/books';
 import PDFReader from './components/PDFReader';
 
@@ -14,6 +14,7 @@ function App() {
   const [fontSize, setFontSize] = useState(18);
   const [showSidebar, setShowSidebar] = useState(false);
   const [bookmarks, setBookmarks] = useState<{ [key: string]: number[] }>({});
+  const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
   const filteredBooks = books.filter(book => {
     const matchesSearch = book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -64,7 +65,6 @@ function App() {
             </div>
 
             <div className="flex items-center gap-2 sm:gap-3">
-              {/* PDF Reader Button */}
               <button
                 onClick={() => setCurrentPage('pdf')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
@@ -117,7 +117,7 @@ function App() {
             {/* Hero Section */}
             <div className="relative overflow-hidden">
               <div className={`absolute inset-0 ${darkMode ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' : 'bg-gradient-to-br from-amber-100 via-orange-50 to-amber-50'}`}></div>
-              <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+              <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -132,10 +132,9 @@ function App() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className={`text-lg sm:text-xl max-w-2xl mx-auto mb-8 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}
+                  className={`text-lg sm:text-xl max-w-2xl mx-auto mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}
                 >
                   Discover, read, and enjoy timeless classics — or upload your own PDF books.
-                  A beautiful reading experience awaits.
                 </motion.p>
 
                 {/* Quick Actions */}
@@ -143,7 +142,7 @@ function App() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.25 }}
-                  className="flex flex-wrap justify-center gap-3 mb-8"
+                  className="flex flex-wrap justify-center gap-3 mb-6"
                 >
                   <button
                     onClick={() => setCurrentPage('pdf')}
@@ -172,7 +171,7 @@ function App() {
                   transition={{ delay: 0.3 }}
                   className="max-w-xl mx-auto relative"
                 >
-                  <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${darkMode ? 'text-gray-400' : 'text-gray-400'}`} />
+                  <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400`} />
                   <input
                     type="text"
                     placeholder="Search books or authors..."
@@ -188,76 +187,173 @@ function App() {
               </div>
             </div>
 
-            {/* Genre Filter */}
+            {/* Controls: Genre Filter + View Toggle */}
             <div id="library" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-              <div className="flex flex-wrap gap-2">
-                {genres.map(genre => (
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="flex flex-wrap gap-2">
+                  {genres.map(genre => (
+                    <button
+                      key={genre}
+                      onClick={() => setSelectedGenre(genre)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        selectedGenre === genre
+                          ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/30'
+                          : darkMode
+                            ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                            : 'bg-white text-gray-600 hover:bg-amber-100 border border-amber-200'
+                      }`}
+                    >
+                      {genre}
+                    </button>
+                  ))}
+                </div>
+                <div className={`flex items-center gap-1 p-1 rounded-lg ${darkMode ? 'bg-gray-800' : 'bg-white border border-amber-200'}`}>
                   <button
-                    key={genre}
-                    onClick={() => setSelectedGenre(genre)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                      selectedGenre === genre
-                        ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/30'
-                        : darkMode
-                          ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                          : 'bg-white text-gray-600 hover:bg-amber-100 border border-amber-200'
+                    onClick={() => setViewMode('grid')}
+                    className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                      viewMode === 'grid'
+                        ? 'bg-amber-600 text-white'
+                        : darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-800'
                     }`}
                   >
-                    {genre}
+                    Grid
                   </button>
-                ))}
+                  <button
+                    onClick={() => setViewMode('table')}
+                    className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                      viewMode === 'table'
+                        ? 'bg-amber-600 text-white'
+                        : darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-800'
+                    }`}
+                  >
+                    Table
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* Books Grid */}
+            {/* Books Display */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredBooks.map((book, index) => (
-                  <motion.div
-                    key={book.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    onClick={() => openBook(book)}
-                    className={`group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${
-                      darkMode
-                        ? 'bg-gray-800 border border-gray-700 hover:border-amber-600/50 hover:shadow-amber-600/10'
-                        : 'bg-white border border-amber-100 hover:border-amber-300 hover:shadow-amber-200/50'
-                    }`}
-                  >
-                    <div className={`h-48 flex items-center justify-center text-7xl ${
-                      darkMode ? 'bg-gradient-to-br from-gray-700 to-gray-800' : 'bg-gradient-to-br from-amber-50 to-orange-50'
-                    }`}>
-                      <span className="group-hover:scale-110 transition-transform duration-300">{book.cover}</span>
-                    </div>
-                    <div className="p-5">
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <h3 className="font-bold text-lg leading-tight mb-1">{book.title}</h3>
-                          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>by {book.author}</p>
+              {viewMode === 'grid' ? (
+                /* Grid View - 7 per row */
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-4">
+                  {filteredBooks.map((book, index) => (
+                    <motion.div
+                      key={book.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      onClick={() => openBook(book)}
+                      className={`group cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl ${
+                        darkMode
+                          ? 'bg-gray-800 border border-gray-700 hover:border-amber-600/50 hover:shadow-amber-600/10'
+                          : 'bg-white border border-amber-100 hover:border-amber-300 hover:shadow-amber-200/50'
+                      }`}
+                    >
+                      {/* Cover Image */}
+                      <div className="relative aspect-[3/4] overflow-hidden">
+                        <img
+                          src={book.coverImage}
+                          alt={book.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                          <span className="text-white text-xs font-medium">Click to read →</span>
                         </div>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          darkMode ? 'bg-amber-900/30 text-amber-400' : 'bg-amber-100 text-amber-700'
-                        }`}>
-                          {book.genre}
-                        </span>
                       </div>
-                      <p className={`mt-3 text-sm line-clamp-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                        {book.description}
-                      </p>
-                      <div className="flex items-center justify-between mt-4">
-                        <div className="flex items-center gap-1">
-                          <span className="text-amber-500">★</span>
-                          <span className="text-sm font-medium">{book.rating}</span>
+                      {/* Book Info */}
+                      <div className="p-3">
+                        <h3 className="font-bold text-sm leading-tight mb-0.5 truncate">{book.title}</h3>
+                        <p className={`text-xs truncate ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                          {book.author}
+                        </p>
+                        <div className="flex items-center justify-between mt-2">
+                          <div className="flex items-center gap-0.5">
+                            <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                            <span className="text-xs font-medium">{book.rating}</span>
+                          </div>
+                          <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                            darkMode ? 'bg-amber-900/30 text-amber-400' : 'bg-amber-100 text-amber-700'
+                          }`}>
+                            {book.genre}
+                          </span>
                         </div>
-                        <span className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                          {book.chapters.length} chapters
-                        </span>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                /* Table View - 7 per row */
+                <div className={`rounded-xl overflow-hidden border ${darkMode ? 'border-gray-700' : 'border-amber-200'}`}>
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className={darkMode ? 'bg-gray-800' : 'bg-amber-100/50'}>
+                          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Cover</th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Title</th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider hidden sm:table-cell">Author</th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider hidden md:table-cell">Genre</th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider hidden lg:table-cell">Rating</th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider hidden lg:table-cell">Pages</th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className={`divide-y ${darkMode ? 'divide-gray-700' : 'divide-amber-100'}`}>
+                        {filteredBooks.map((book, index) => (
+                          <motion.tr
+                            key={book.id}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.05 }}
+                            className={`cursor-pointer transition-colors ${
+                              darkMode ? 'hover:bg-gray-800/50' : 'hover:bg-amber-50'
+                            }`}
+                            onClick={() => openBook(book)}
+                          >
+                            <td className="px-4 py-3">
+                              <img
+                                src={book.coverImage}
+                                alt={book.title}
+                                className="w-12 h-16 object-cover rounded-md shadow-sm"
+                              />
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="font-semibold text-sm">{book.title}</div>
+                              <div className={`text-xs sm:hidden ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                                {book.author}
+                              </div>
+                            </td>
+                            <td className={`px-4 py-3 text-sm hidden sm:table-cell ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                              {book.author}
+                            </td>
+                            <td className="px-4 py-3 hidden md:table-cell">
+                              <span className={`text-xs px-2 py-1 rounded-full ${
+                                darkMode ? 'bg-amber-900/30 text-amber-400' : 'bg-amber-100 text-amber-700'
+                              }`}>
+                                {book.genre}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 hidden lg:table-cell">
+                              <div className="flex items-center gap-1">
+                                <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                                <span className="text-sm font-medium">{book.rating}</span>
+                              </div>
+                            </td>
+                            <td className={`px-4 py-3 text-sm hidden lg:table-cell ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                              {book.pages}
+                            </td>
+                            <td className="px-4 py-3">
+                              <button className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium rounded-lg transition-colors shadow-sm">
+                                Read
+                              </button>
+                            </td>
+                          </motion.tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
 
               {filteredBooks.length === 0 && (
                 <div className="text-center py-16">
@@ -345,13 +441,20 @@ function App() {
                   >
                     <Library className="w-5 h-5" />
                   </button>
-                  <div>
-                    <h2 className="font-bold text-sm sm:text-base truncate max-w-[200px] sm:max-w-xs">
-                      {selectedBook?.title}
-                    </h2>
-                    <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                      {selectedBook?.chapters[currentChapter]?.title}
-                    </p>
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={selectedBook?.coverImage}
+                      alt={selectedBook?.title}
+                      className="w-10 h-14 object-cover rounded-md shadow-md hidden sm:block"
+                    />
+                    <div>
+                      <h2 className="font-bold text-sm sm:text-base truncate max-w-[200px] sm:max-w-xs">
+                        {selectedBook?.title}
+                      </h2>
+                      <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                        {selectedBook?.chapters[currentChapter]?.title}
+                      </p>
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
