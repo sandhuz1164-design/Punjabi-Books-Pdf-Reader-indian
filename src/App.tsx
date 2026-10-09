@@ -1,9 +1,8 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Book, Home, Search, BookOpen, Moon, Sun, Library, X, FileUp, Star, Quote, Users, Hash, ChevronDown, Headphones, Trophy, Heart, Mail, Globe, Shield, Sparkles, ArrowRight, Music, ExternalLink } from 'lucide-react';
+import { Book, Home, Search, BookOpen, Moon, Sun, Library, X, FileUp, Star, Quote, Users, Hash, ChevronDown, Headphones, Trophy, Heart, Mail, Globe, Shield, Sparkles, ArrowRight } from 'lucide-react';
 import { books, genres, Book as BookType } from './data/books';
 import { authors, demoTags } from './data/authors';
-import { topArtists } from './data/topArtists';
 import PDFReader from './components/PDFReader';
 import BookInfo from './components/BookInfo';
 import AudioPlayer from './components/AudioPlayer';
@@ -133,6 +132,18 @@ function App() {
             </div>
 
             <div className="flex items-center gap-2 sm:gap-3">
+              <button
+                onClick={() => setCurrentPage('pdf')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                  currentPage === 'pdf'
+                    ? 'bg-red-500 text-white'
+                    : darkMode ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-amber-100 text-gray-700'
+                }`}
+              >
+                <FileUp className="w-4 h-4" />
+                <span className="hidden sm:inline">PDF Reader</span>
+              </button>
+
               <button
                 onClick={() => setDarkMode(!darkMode)}
                 className={`p-2 rounded-full transition-colors ${darkMode ? 'hover:bg-gray-700 text-yellow-400' : 'hover:bg-amber-100 text-amber-700'}`}
@@ -334,108 +345,6 @@ function App() {
                     </motion.div>
                   ))}
                 </div>
-              </div>
-            </div>
-
-            {/* ========== TOP ARTISTS SECTION (Punjabi Hits) ========== */}
-            <div id="top-artists" className={`py-10 border-b ${darkMode ? 'border-gray-800 bg-gradient-to-b from-gray-900/50 to-gray-900' : 'border-amber-100 bg-gradient-to-b from-white to-amber-50/50'}`}>
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="text-center mb-6"
-                >
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Music className="w-5 h-5 text-amber-600" />
-                    <h2 className="text-xl sm:text-2xl font-bold">Top Artists</h2>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${darkMode ? 'bg-red-900/30 text-red-400' : 'bg-red-100 text-red-600'}`}>
-                      Punjabi Hits
-                    </span>
-                  </div>
-                  <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Trending artists from Apple Music's Punjabi Hits playlist
-                  </p>
-                </motion.div>
-
-                {/* Artists Grid - Horizontal Scroll on Mobile */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                  {topArtists.map((artist, index) => (
-                    <motion.a
-                      key={artist.id}
-                      href={artist.appleMusicUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.06 }}
-                      whileHover={{ scale: 1.03, y: -3 }}
-                      className={`group cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg block ${
-                        darkMode
-                          ? 'bg-gray-800 border border-gray-700 hover:border-amber-600/50'
-                          : 'bg-white border border-amber-100 hover:border-amber-300 hover:shadow-amber-200/50'
-                      }`}
-                    >
-                      {/* Artist Avatar */}
-                      <div className={`relative h-20 bg-gradient-to-br ${artist.color} flex items-center justify-center overflow-hidden`}>
-                        <span className="text-2xl font-bold text-white/90 group-hover:scale-110 transition-transform duration-300">
-                          {artist.initials}
-                        </span>
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
-                        {/* Rank badge */}
-                        <div className={`absolute top-1.5 left-1.5 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                          index < 3 ? 'bg-white/90 text-gray-900' : 'bg-black/30 text-white'
-                        }`}>
-                          {index + 1}
-                        </div>
-                        {/* External link icon */}
-                        <div className="absolute top-1.5 right-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <ExternalLink className="w-3.5 h-3.5 text-white/80" />
-                        </div>
-                      </div>
-
-                      {/* Artist Info */}
-                      <div className="p-2.5">
-                        <h3 className="font-bold text-xs leading-tight mb-1 truncate">{artist.name}</h3>
-                        <div className="flex items-center justify-between">
-                          <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                            darkMode ? 'bg-amber-900/30 text-amber-400' : 'bg-amber-100 text-amber-700'
-                          }`}>
-                            {artist.genre}
-                          </span>
-                          <div className="flex items-center gap-0.5">
-                            <Music className="w-3 h-3 text-red-500" />
-                            <span className={`text-[10px] font-medium ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                              {artist.hits}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.a>
-                  ))}
-                </div>
-
-                {/* Source link */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  className="text-center mt-4"
-                >
-                  <a
-                    href="https://music.apple.com/in/playlist/punjabi-hits/pl.35b8520d9d6a486d9bf5c1b3331165b2"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`inline-flex items-center gap-1.5 text-xs font-medium transition-colors ${
-                      darkMode ? 'text-gray-500 hover:text-amber-500' : 'text-gray-400 hover:text-amber-600'
-                    }`}
-                  >
-                    <Music className="w-3 h-3" />
-                    Source: Apple Music — Punjabi Hits Playlist
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                </motion.div>
               </div>
             </div>
 
@@ -865,10 +774,9 @@ function App() {
                     <ul className="space-y-2">
                       {[
                         { label: 'Home', href: '#' },
-                        { label: 'Top 10 Books', href: '#top-books' },
-                        { label: 'Top Artists', href: '#top-artists' },
+                        { label: 'Top Books', href: '#top-books' },
                         { label: 'Library', href: '#library' },
-                        { label: 'Categories', href: '#tags' },
+                        { label: 'Authors', href: '#tags' },
                         { label: 'PDF Reader', action: () => setCurrentPage('pdf') },
                       ].map((link, i) => (
                         <li key={i}>
