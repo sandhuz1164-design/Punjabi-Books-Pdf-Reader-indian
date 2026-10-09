@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Book, Home, Search, BookOpen, Moon, Sun, Library, X, FileUp, Star, Quote, Users, Hash, ChevronDown, Headphones, Trophy, Heart, Mail, Globe, Shield, Sparkles, ArrowRight } from 'lucide-react';
 import { books, genres, Book as BookType } from './data/books';
@@ -34,6 +34,30 @@ function App() {
   const getRelatedBooks = (book: BookType) => {
     return books.filter(b => b.genre === book.genre && b.id !== book.id);
   };
+
+  // Seeded random shuffle for consistent display per session
+  const shuffleArray = <T,>(array: T[], seed: number): T[] => {
+    const shuffled = [...array];
+    let s = seed;
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      s = (s * 9301 + 49297) % 233280;
+      const j = Math.floor((s / 233280) * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  // Random tags (6 random from all tags) - refreshed with a seed
+  const randomTags = useMemo(() => {
+    const seed = Math.floor(Math.random() * 10000);
+    return shuffleArray(demoTags.filter(t => t.count > 0), seed).slice(0, 6);
+  }, []);
+
+  // Random authors (5 random from all authors)
+  const randomAuthors = useMemo(() => {
+    const seed = Math.floor(Math.random() * 10000);
+    return shuffleArray(authors, seed).slice(0, 5);
+  }, []);
 
   const openBookInfo = (book: BookType) => {
     setSelectedBook(book);
@@ -324,37 +348,37 @@ function App() {
               </div>
             </div>
 
-            {/* ========== TRENDING TAGS SECTION ========== */}
-            <div id="tags" className={`py-12 border-b ${darkMode ? 'border-gray-800' : 'border-amber-100'}`}>
+            {/* ========== EXPLORE BY CATEGORY SECTION (Random Tags) ========== */}
+            <div id="tags" className={`py-10 border-b ${darkMode ? 'border-gray-800' : 'border-amber-100'}`}>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="text-center mb-8"
+                  className="text-center mb-6"
                 >
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <Hash className="w-6 h-6 text-amber-600" />
-                    <h2 className="text-2xl sm:text-3xl font-bold">Trending Tags</h2>
+                    <Hash className="w-5 h-5 text-amber-600" />
+                    <h2 className="text-xl sm:text-2xl font-bold">Explore by Category</h2>
                   </div>
                   <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Browse by topic — click any tag to filter books
+                    Click any category to discover books
                   </p>
                 </motion.div>
 
-                {/* Tags Grid - 20 tags */}
-                <div className="flex flex-wrap justify-center gap-3">
-                  {demoTags.map((tag, index) => (
+                {/* Random Tags - Compact Row */}
+                <div className="flex flex-wrap justify-center gap-2.5">
+                  {randomTags.map((tag, index) => (
                     <motion.button
                       key={tag.name}
                       initial={{ opacity: 0, scale: 0.8 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
-                      transition={{ delay: index * 0.03 }}
+                      transition={{ delay: index * 0.05 }}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleTagClick(tag.name)}
-                      className={`flex items-center gap-2 px-4 py-2.5 rounded-full font-medium text-sm transition-all ${
+                      className={`flex items-center gap-2 px-4 py-2 rounded-full font-medium text-sm transition-all ${
                         selectedGenre === tag.name
                           ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/30'
                           : darkMode
@@ -364,71 +388,59 @@ function App() {
                     >
                       <span className="text-base">{tag.icon}</span>
                       <span>{tag.name}</span>
-                      {tag.count > 0 && (
-                        <span className={`text-xs px-1.5 py-0.5 rounded-full ${
-                          selectedGenre === tag.name
-                            ? 'bg-white/20'
-                            : darkMode ? 'bg-gray-700 text-gray-400' : 'bg-amber-100 text-amber-700'
-                        }`}>
-                          {tag.count}
-                        </span>
-                      )}
                     </motion.button>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* ========== FEATURED AUTHORS SECTION ========== */}
-            <div className={`py-12 border-b ${darkMode ? 'border-gray-800' : 'border-amber-100'}`}>
+            {/* ========== FEATURED AUTHORS SECTION (Random) ========== */}
+            <div className={`py-10 border-b ${darkMode ? 'border-gray-800' : 'border-amber-100'}`}>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="text-center mb-8"
+                  className="text-center mb-6"
                 >
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <Users className="w-6 h-6 text-amber-600" />
-                    <h2 className="text-2xl sm:text-3xl font-bold">Featured Authors</h2>
+                    <Users className="w-5 h-5 text-amber-600" />
+                    <h2 className="text-xl sm:text-2xl font-bold">Featured Authors</h2>
                   </div>
                   <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    10 legendary writers — click any author to see their books
+                    Legendary writers — click any author to see their books
                   </p>
                 </motion.div>
 
-                {/* Authors Grid - 10 authors in 5x2 layout */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                  {authors.map((author, index) => (
+                {/* Random Authors - Compact Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                  {randomAuthors.map((author, index) => (
                     <motion.div
                       key={author.id}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: index * 0.05 }}
-                      whileHover={{ scale: 1.03, y: -4 }}
+                      transition={{ delay: index * 0.06 }}
+                      whileHover={{ scale: 1.03, y: -3 }}
                       onClick={() => handleAuthorClick(author.name)}
-                      className={`group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl ${
+                      className={`group cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg ${
                         darkMode
                           ? 'bg-gray-800 border border-gray-700 hover:border-amber-600/50'
                           : 'bg-white border border-amber-100 hover:border-amber-300 hover:shadow-amber-200/50'
                       }`}
                     >
                       {/* Author Avatar */}
-                      <div className={`relative h-28 bg-gradient-to-br ${author.color} flex items-center justify-center overflow-hidden`}>
-                        <span className="text-4xl font-bold text-white/90 group-hover:scale-110 transition-transform duration-300">
+                      <div className={`relative h-20 bg-gradient-to-br ${author.color} flex items-center justify-center overflow-hidden`}>
+                        <span className="text-3xl font-bold text-white/90 group-hover:scale-110 transition-transform duration-300">
                           {author.initials}
                         </span>
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
-                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Quote className="w-4 h-4 text-white/80" />
-                        </div>
                       </div>
 
-                      {/* Author Info */}
-                      <div className="p-3">
-                        <h3 className="font-bold text-sm leading-tight mb-0.5 truncate">{author.name}</h3>
-                        <div className="flex items-center gap-1 mb-1.5">
+                      {/* Author Info - Compact */}
+                      <div className="p-2.5">
+                        <h3 className="font-bold text-xs leading-tight mb-0.5 truncate">{author.name}</h3>
+                        <div className="flex items-center gap-1 mb-1">
                           <span className={`text-[10px] ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                             {author.nationality}
                           </span>
@@ -437,25 +449,13 @@ function App() {
                             {author.era}
                           </span>
                         </div>
-                        <p className={`text-[11px] line-clamp-2 mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                          {author.bio}
-                        </p>
-                        {/* Quote */}
-                        <div className={`text-[10px] italic line-clamp-2 pt-2 border-t ${
-                          darkMode ? 'border-gray-700 text-gray-500' : 'border-amber-100 text-gray-500'
-                        }`}>
-                          "{author.quote}"
-                        </div>
-                        {/* Genre badge */}
-                        <div className="flex items-center justify-between mt-2">
+                        <div className="flex items-center justify-between">
                           <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${
                             darkMode ? 'bg-amber-900/30 text-amber-400' : 'bg-amber-100 text-amber-700'
                           }`}>
                             {author.genre}
                           </span>
-                          <span className={`text-[9px] ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                            {author.bookCount} {author.bookCount === 1 ? 'book' : 'books'}
-                          </span>
+                          <Quote className={`w-3 h-3 ${darkMode ? 'text-gray-600' : 'text-gray-300'}`} />
                         </div>
                       </div>
                     </motion.div>
