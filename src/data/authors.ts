@@ -1,17 +1,27 @@
-export interface Author {
-  id: string;
-  name: string;
-  initials: string;
-  color: string;
-  nationality: string;
-  era: string;
-  bio: string;
-  bookCount: number;
-  genre: string;
-  quote: string;
-}
+export const demoTags = [
+  { name: "Philosophy", icon: "🧠", count: 2 },
+  { name: "Fiction", icon: "📖", count: 3 },
+  { name: "Mystery", icon: "🔍", count: 1 },
+  { name: "Romance", icon: "💕", count: 1 },
+  { name: "Classic", icon: "📜", count: 7 },
+  { name: "Adventure", icon: "⚔️", count: 2 },
+  { name: "Drama", icon: "🎭", count: 1 },
+  { name: "Epic", icon: "🏛️", count: 1 },
+  { name: "Poetry", icon: "🎵", count: 0 },
+  { name: "History", icon: "📚", count: 1 },
+  { name: "Self-Help", icon: "💡", count: 0 },
+  { name: "Biography", icon: "👤", count: 0 },
+  { name: "Sci-Fi", icon: "🚀", count: 0 },
+  { name: "Fantasy", icon: "🐉", count: 1 },
+  { name: "Horror", icon: "👻", count: 0 },
+  { name: "Thriller", icon: "🔪", count: 0 },
+  { name: "Humor", icon: "😂", count: 0 },
+  { name: "Science", icon: "🔬", count: 0 },
+  { name: "Art", icon: "🎨", count: 0 },
+  { name: "War", icon: "🏹", count: 1 },
+];
 
-export const authors: Author[] = [
+export const authors = [
   {
     id: "sun-tzu",
     name: "Sun Tzu",
@@ -19,7 +29,7 @@ export const authors: Author[] = [
     color: "from-red-500 to-orange-500",
     nationality: "Chinese",
     era: "5th Century BC",
-    bio: "Ancient Chinese military strategist, philosopher, and writer who lived during the Eastern Zhou period.",
+    bio: "Ancient Chinese military strategist, philosopher, and writer.",
     bookCount: 1,
     genre: "Philosophy",
     quote: "The supreme art of war is to subdue the enemy without fighting."
@@ -31,7 +41,7 @@ export const authors: Author[] = [
     color: "from-blue-500 to-indigo-600",
     nationality: "Roman",
     era: "121–180 AD",
-    bio: "Roman Emperor and Stoic philosopher whose personal writings are a significant source of ancient Stoic philosophy.",
+    bio: "Roman Emperor and Stoic philosopher whose writings shaped Western thought.",
     bookCount: 1,
     genre: "Philosophy",
     quote: "The happiness of your life depends upon the quality of your thoughts."
@@ -43,7 +53,7 @@ export const authors: Author[] = [
     color: "from-purple-500 to-pink-500",
     nationality: "English",
     era: "1832–1898",
-    bio: "English writer, mathematician, and photographer, best known for his whimsical fantasy literature.",
+    bio: "English writer and mathematician, master of whimsical fantasy literature.",
     bookCount: 1,
     genre: "Fiction",
     quote: "If you don't know where you are going, any road will get you there."
@@ -55,7 +65,7 @@ export const authors: Author[] = [
     color: "from-gray-700 to-gray-900",
     nationality: "Scottish",
     era: "1859–1930",
-    bio: "British writer and physician who created the character Sherlock Holmes, one of the most iconic in fiction.",
+    bio: "British writer who created Sherlock Holmes, the world's most famous detective.",
     bookCount: 1,
     genre: "Mystery",
     quote: "When you have eliminated the impossible, whatever remains must be the truth."
@@ -67,7 +77,7 @@ export const authors: Author[] = [
     color: "from-pink-400 to-rose-500",
     nationality: "English",
     era: "1775–1817",
-    bio: "English novelist known for her six major novels which interpret, critique, and comment on the British landed gentry.",
+    bio: "English novelist known for her witty social commentary and romance.",
     bookCount: 1,
     genre: "Romance",
     quote: "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife."
@@ -79,7 +89,7 @@ export const authors: Author[] = [
     color: "from-amber-500 to-yellow-600",
     nationality: "American",
     era: "1896–1940",
-    bio: "American novelist widely regarded as one of the greatest American writers of the 20th century.",
+    bio: "American novelist, chronicler of the Jazz Age and the American Dream.",
     bookCount: 1,
     genre: "Fiction",
     quote: "So we beat on, boats against the current, borne back ceaselessly into the past."
@@ -91,10 +101,10 @@ export const authors: Author[] = [
     color: "from-orange-600 to-red-700",
     nationality: "Spanish",
     era: "1547–1616",
-    bio: "Spanish novelist, poet, and playwright, author of Don Quixote, widely considered the first modern novel.",
+    bio: "Spanish novelist, author of Don Quixote — the first modern novel.",
     bookCount: 1,
     genre: "Fiction",
-    quote: "The truth may be stretched thin, but it never breaks, and it always surfaces above lies, as oil floats on water."
+    quote: "The truth may be stretched thin, but it never breaks."
   },
   {
     id: "william-shakespeare",
@@ -103,7 +113,7 @@ export const authors: Author[] = [
     color: "from-emerald-600 to-teal-700",
     nationality: "English",
     era: "1564–1616",
-    bio: "English playwright, poet, and actor, widely regarded as the greatest writer in the English language.",
+    bio: "Greatest writer in the English language, author of 37 plays and 154 sonnets.",
     bookCount: 37,
     genre: "Drama",
     quote: "To be, or not to be, that is the question."
@@ -115,7 +125,7 @@ export const authors: Author[] = [
     color: "from-cyan-600 to-blue-800",
     nationality: "Greek",
     era: "8th Century BC",
-    bio: "Legendary ancient Greek epic poet credited with authoring the Iliad and the Odyssey.",
+    bio: "Legendary ancient Greek epic poet, author of the Iliad and the Odyssey.",
     bookCount: 2,
     genre: "Epic",
     quote: "Of all creatures that breathe and move upon the earth, nothing is bred that is weaker than man."
@@ -127,9 +137,9 @@ export const authors: Author[] = [
     color: "from-violet-600 to-purple-800",
     nationality: "Russian",
     era: "1828–1910",
-    bio: "Russian writer regarded as one of the greatest authors of all time, best known for War and Peace and Anna Karenina.",
+    bio: "Russian writer, author of War and Peace and Anna Karenina.",
     bookCount: 12,
     genre: "Literary Fiction",
     quote: "Everyone thinks of changing the world, but no one thinks of changing himself."
-  }
+  },
 ];
