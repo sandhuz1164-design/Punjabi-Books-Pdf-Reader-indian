@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookVerse - Free Online Digital Library | Read Classic Books, PDFs & More</title>
+    <meta name="description" content="BookVerse is your free digital library for reading classic books online. Explore timeless literature including The Art of War, Meditations, Alice in Wonderland, Pride and Prejudice, and more. Upload PDFs, listen to audiobooks, and discover related books." />
+    <meta name="keywords" content="free books online, digital library, classic books, read books online, PDF reader, audiobooks, The Art of War, Meditations, Alice in Wonderland, Pride and Prejudice, Great Gatsby, literature, philosophy, fiction, mystery novels" />
+    <meta name="author" content="BookVerse" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="BookVerse - Free Online Digital Library" />
+    <meta property="og:description" content="Read classic books online for free. Curated collection of timeless literature with built-in PDF reader and audio support." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BookVerse - Free Online Digital Library" />
+    <meta name="twitter:description" content="Read classic books online for free. Curated collection of timeless literature." />
+    <link rel="canonical" href="https://bookverse.app" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "BookVerse",
+      "url": "https://bookverse.app",
+      "description": "Free online digital library for reading classic books, with PDF reader and audio support.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://bookverse.app/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is BookVerse free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! BookVerse is completely free. Read all classic books online without any subscription or hidden fees."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What books are available on BookVerse?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We offer a curated collection of timeless classics including The Art of War, Meditations, Alice's Adventures in Wonderland, A Study in Scarlet, Pride and Prejudice, The Great Gatsby, Don Quixote, and more."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I upload my own PDF books?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely! Use our built-in PDF Reader to upload and read any PDF document directly in your browser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I listen to books instead of reading?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Our built-in audio reader converts book text to speech, allowing you to listen while you multitask."
+          }
+        }
+      ]
+    }
+    </script>
+    <style>
+      /* 内联样式确保主题色立即生效，避免闪烁 */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+      html.light,
+      html.light body {
+        background-color: #ffffff !important;
+        color: #000000;
+      }
+      html.dark,
+      html.dark body {
+        background-color: #1a1a1a !important;
+        color: #ffffff;
+      }
+    </style>
+    <script>
+      // 在 React 加载前立即设置主题，避免闪烁
+      (function () {
+        const isInIframe = window.self !== window.top;
+
+        function applyThemeToDOM(theme) {
+          document.documentElement.classList.remove("light", "dark");
+          document.documentElement.classList.add(theme);
+          document.documentElement.setAttribute("data-theme", theme);
+        }
+
+        if (isInIframe) {
+          // 监听父窗口主动推送的主题消息
+          window.addEventListener("message", function (event) {
+            if (event.data && typeof event.data.theme === "string") {
+              const theme = event.data.theme;
+              if (theme === "light" || theme === "dark") {
+                applyThemeToDOM(theme);
+              }
+            }
+          });
+        } else {
+          // 非 iframe 环境，使用默认 dark 主题
+          applyThemeToDOM("dark");
+        }
+      })();
+    </script>
+      <script>
+      (function () {
+        if (window.self === window.top) return;
+        var reported = {};
+        window.addEventListener("error", function (event) {
+          // 资源加载失败的 error 事件没有 message，此处仅上报 JS 运行时错误
+          if (!event || !event.message) return;
+          var key =
+            event.message + "|" + (event.filename || "") + "|" + (event.lineno || 0);
+          if (reported[key]) return; // 相同错误只上报一次，避免渲染循环刷屏
+          reported[key] = true;
+          try {
+            window.parent.postMessage(
+              {
+                type: "sandbox-runtime-error",
+                payload: {
+                  message: String(event.message).slice(0, 500),
+                  filename: event.filename || "",
+                  lineno: event.lineno || 0,
+                  colno: event.colno || 0,
+                  stack:
+                    event.error && event.error.stack
+                      ? String(event.error.stack).slice(0, 2000)
+                      : ""
+                }
+              },
+              "*"
+            );
+          } catch (e) {
+            /* 上报失败不影响页面运行 */
+          }
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
